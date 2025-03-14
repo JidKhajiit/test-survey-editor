@@ -1,71 +1,59 @@
-// в режиме редактирования сделать табы параметры/вопросы/логика/условия/респонденты, добавление опроса, удаление опроса
+// в режиме редактирования сделать табы
+параметры/вопросы/логика/условия/респонденты, добавление опроса, удаление опроса
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue';
-import RelationsEditor from './RelationsEditor.vue';
-import QuestionsEditor from './QuestionsEditor.vue';
-import type { Survey } from '../assets/types';
-
+import { ref } from "vue";
+import RelationsEditor from "./RelationsEditor.vue";
+import QuestionsEditor from "./QuestionsEditor.vue";
+import { Tab, type Survey } from "../assets/types";
+import { tabs } from "../assets/constants/tabs";
 
 const props = defineProps<{
-    survey: Survey
+  survey: Survey;
 }>();
 const emit = defineEmits<{
-    back: [],
-    save: [survey: Survey]
+  back: [];
+  save: [survey: Survey];
 }>();
 
-const activeName = ref('questions');
-
+const activeName = ref(Tab.QUESTIONS);
 </script>
 
 <template>
-    <div class="common-layout">
-        <h2>{{ props.survey.label }}</h2>
-        <el-container>
-            <el-tabs v-model="activeName" type="card" class="tabs">
-                <el-tab-pane label="параметры" disabled name="params"/>
-                <el-tab-pane label="вопросы" name="questions"/>
-                <el-tab-pane label="логика" name="relations"/>
-                <el-tab-pane label="условия" disabled name="conditions"/>
-                <el-tab-pane label="респонденты" disabled name="respondents"/>
-            </el-tabs>
-            <div>
-                <QuestionsEditor v-if="activeName === 'questions'" :survey="survey" />
-                <RelationsEditor
-                    v-if="activeName === 'relations'"
-                    :survey="survey"
-                    @back="emit('back')"
-                    @save="(e) => emit('save', e)"
-                />
-
-            </div>
-        </el-container>
-    </div>
+  <header>
+    <el-button plain @click="emit('back')" class="button-back">
+      ← назад
+    </el-button>
+    <h1>{{ props.survey.label }}</h1>
+  </header>
+  <el-card shadow="always">
+    <el-tabs v-model="activeName" type="card" class="tabs">
+      <el-tab-pane
+        v-for="tab in tabs"
+        :label="tab.label"
+        :disabled="tab.disabled"
+        :name="tab.name"
+      />
+    </el-tabs>
+    <section>
+      <QuestionsEditor v-if="activeName === Tab.QUESTIONS" :survey="survey" />
+      <RelationsEditor
+        v-if="activeName === Tab.RELATIONS"
+        :survey="survey"
+        @save="(e) => emit('save', e)"
+      />
+    </section>
+  </el-card>
 </template>
 
-<style scoped>
-.el-container {
-    display: flex;
-    flex-direction: column;
+<style lang="scss" scoped>
+header {
+  display: flex;
+  justify-content: center;
+  position: relative;
 }
-.el-header {
-    height: fit-content;
-}
-.main-info > * {
-    text-align: left;
-    padding: 0 12px;
-}
-.main-controls {
-    display: flex;
-    gap: 4px;
-}
-
-.head {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-.survey {
-    width: 100%;
+.button-back {
+  position: absolute;
+  left: 0;
+  bottom: 5px;
 }
 </style>

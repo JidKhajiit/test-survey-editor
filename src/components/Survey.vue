@@ -1,87 +1,67 @@
-// в режиме редактирования сделать табы параметры/вопросы/логика/условия/респонденты, добавление опроса, удаление опроса
+// в режиме редактирования сделать табы
+параметры/вопросы/логика/условия/респонденты, добавление опроса, удаление опроса
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue';
-import { PencilIcon, TrashIcon } from '@heroicons/vue/24/solid';
-import type { TabsPaneContext } from 'element-plus';
-import type { Survey } from '../assets/types';
+import { ref } from "vue";
+import { Delete, Edit } from "@element-plus/icons-vue";
+import type { Survey } from "../assets/types";
 
 const props = defineProps<{
-    survey: Survey
+  survey: Survey;
 }>();
 const emit = defineEmits<{
-    edit: [id: Number],
-    delete: [id: Number],
+  edit: [id: Number];
+  delete: [id: Number];
 }>();
 
-const isDelConfirmModalVisible = ref(false)
-
-
-onMounted(() => {
-    console.log(props.survey);
-});
+const isDelConfirmModalVisible = ref(false);
 
 const confirmDelete = () => {
-    isDelConfirmModalVisible.value = false;
-    emit('delete', props.survey.id);
-}
-const handleClick = () => {
-  console.log('click')
-}
-
-// const handleClick = (tab: TabsPaneContext, event: Event) => {
-//   console.log(tab, event)
-// };
+  isDelConfirmModalVisible.value = false;
+  emit("delete", props.survey.id);
+};
 </script>
 
 <template>
-    <div class="common-layout">
-        <el-container class="main-info">
-            <div style="min-width: 40px">{{ props.survey.id }}</div>
-            <div style="min-width: 180px">{{ props.survey.label }}</div>
-            <div style="width: 100%">{{ props.survey.about }}</div>
-            <div style="min-width: 180px">{{ props.survey.author }}</div>
-            <controls class="main-controls">
-                <PencilIcon class="icon" @click="emit('edit', props.survey.id)"/>
-                <TrashIcon class="icon" @click="isDelConfirmModalVisible = true"/>
-            </controls>
-        </el-container>
-
-        <el-dialog v-model="isDelConfirmModalVisible" :modal="false">
-            <span>Точно хотите удалить опрос?</span>
-            <template #footer>
-            <div class="dialog-footer">
-                <el-button @click="isDelConfirmModalVisible = false">Отмена</el-button>
-                <el-button type="primary" @click="confirmDelete">
-                    Удалить
-                </el-button>
-            </div>
-            </template>
-        </el-dialog>
-    </div>
+  <tr class="el-card is-always-shadow el-card__body">
+    <td style="min-width: 40px">{{ props.survey.id }}</td>
+    <td style="min-width: 180px">{{ props.survey.label }}</td>
+    <td style="width: 100%">{{ props.survey.about }}</td>
+    <td style="min-width: 180px">{{ props.survey.author }}</td>
+    <td>
+      <dev class="controls">
+        <el-button
+          type="primary"
+          :icon="Edit"
+          circle
+          @click="emit('edit', props.survey.id)"
+        />
+        <el-button
+          type="danger"
+          :icon="Delete"
+          circle
+          @click="isDelConfirmModalVisible = true"
+        />
+      </dev>
+    </td>
+  </tr>
+  <el-dialog v-model="isDelConfirmModalVisible" :modal="false">
+    <span>Точно хотите удалить опрос?</span>
+    <template #footer>
+      <div class="dialog-footer">
+        <el-button @click="isDelConfirmModalVisible = false">Отмена</el-button>
+        <el-button type="primary" @click="confirmDelete"> Удалить </el-button>
+      </div>
+    </template>
+  </el-dialog>
 </template>
 
-<style scoped>
-.el-header {
-    height: fit-content;
+<style lang="scss" scoped>
+.el-card > * {
+  text-align: left;
+  padding: 0 12px;
 }
-.main-info > * {
-    text-align: left;
-    padding: 0 12px;
-}
-.main-controls {
-    display: flex;
-    gap: 4px;
-}
-.editor-controls {
-    display: flex;
-    justify-content: end;
-}
-.head {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-.survey {
-    width: 100%;
+.controls {
+  display: flex;
+  align-items: center;
 }
 </style>

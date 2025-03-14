@@ -1,23 +1,16 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-import type { Survey } from '../assets/types';
-
+import type { Survey } from "../assets/types";
 
 const props = defineProps<{
-  survey: Survey
+  survey: Survey;
 }>();
-
-const count = ref(0)
 </script>
 
 <template>
-  <h3>Редактор вопросов</h3>
-  <h4 v-for="question in props.survey.questions">{{ question.label }}</h4>
+  <h2>Редактор вопросов</h2>
+  <p v-if="!props.survey.questions.length">Вопросов пока нет(</p>
 
+  <ul v-else>
+    <li v-for="question in props.survey.questions">{{ question.label }}</li>
+  </ul>
 </template>
-
-<style scoped>
-.read-the-docs {
-  color: #888;
-}
-</style>

@@ -20,3 +20,11 @@ export type Survey = {
     questions: Question[];
     relations: Relation[];
 }
+
+export enum Tab {
+    PARAMS = 'params',
+    QUESTIONS = 'questions',
+    RELATIONS = 'relations',
+    CONDITIONS = 'conditions',
+    RESPONDENTS = 'respondents'
+}
