@@ -28,7 +28,7 @@ const confirmDelete = () => {
     <td style="width: 100%">{{ props.survey.about }}</td>
     <td style="min-width: 180px">{{ props.survey.author }}</td>
     <td>
-      <dev class="controls">
+      <div class="controls">
         <el-button
           type="primary"
           :icon="Edit"
@@ -41,15 +41,21 @@ const confirmDelete = () => {
           circle
           @click="isDelConfirmModalVisible = true"
         />
-      </dev>
+      </div>
     </td>
   </tr>
-  <el-dialog v-model="isDelConfirmModalVisible" :modal="false">
-    <span>Точно хотите удалить опрос?</span>
+
+  <el-dialog
+    v-model="isDelConfirmModalVisible"
+    :modal="true"
+    title="Подтверждение удаления"
+    width="400px"
+  >
+    <span>Вы уверены, что хотите удалить опрос "{{ props.survey.label }}"?</span>
     <template #footer>
       <div class="dialog-footer">
         <el-button @click="isDelConfirmModalVisible = false">Отмена</el-button>
-        <el-button type="primary" @click="confirmDelete"> Удалить </el-button>
+        <el-button type="danger" @click="confirmDelete">Удалить</el-button>
       </div>
     </template>
   </el-dialog>
