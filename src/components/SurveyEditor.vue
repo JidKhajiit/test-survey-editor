@@ -1,5 +1,3 @@
-// в режиме редактирования сделать табы
-параметры/вопросы/логика/условия/респонденты, добавление опроса, удаление опроса
 <script setup lang="ts">
 import { ref } from "vue";
 import RelationsEditor from "./RelationsEditor.vue";
@@ -15,7 +13,7 @@ const emit = defineEmits<{
   save: [survey: Survey];
 }>();
 
-const activeName = ref(Tab.QUESTIONS);
+const activeName = ref(Tab.RELATIONS);
 </script>
 
 <template>

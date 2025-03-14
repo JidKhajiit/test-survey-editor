@@ -1,5 +1,5 @@
 import { ref } from 'vue';
-import type { Survey, Question, Relation } from '../assets/types';
+import type { Survey, Relation } from '../assets/types';
 
 export function useRelations(survey: Survey) {
     const questions = ref([...survey.questions]);

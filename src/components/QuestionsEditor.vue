@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { Delete, Edit, Plus } from "@element-plus/icons-vue";
-import type { Survey, Question } from "../assets/types";
+import type { Survey } from "../assets/types";
 
 const props = defineProps<{
   survey: Survey;
