@@ -1,20 +1,32 @@
 {
-  "name": "survey-editor",
+  "name": "survey-app",
+  "version": "1.0.0",
   "private": true,
-  "version": "0.0.0",
-  "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview"
+    "build": "vue-tsc && vite build",
+    "preview": "vite preview",
+    "api:dev": "ts-node-dev --respawn --transpile-only src/api/server.ts",
+    "api:build": "tsc -p tsconfig.api.json",
+    "api:start": "node dist/api/server.js"
   },
   "dependencies": {
-    "element-plus": "^2.9.6",
-    "vue": "^3.5.13"
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "express-validator": "^7.0.1",
+    "mongoose": "^8.1.1",
+    "vue": "^3.4.15",
+    "element-plus": "^2.5.3"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "^5.2.1",
-    "sass-embedded": "^1.85.1",
-    "vite": "^6.2.0"
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
+    "@types/node": "^20.11.16",
+    "@vitejs/plugin-vue": "^5.0.3",
+    "sass": "^1.70.0",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.3.3",
+    "vite": "^5.0.12",
+    "vue-tsc": "^1.8.27"
   }
 }

@@ -5,27 +5,46 @@ import type { Survey } from "../assets/types";
 
 const props = defineProps<{
   surveys: Survey[];
+  isLoading: boolean;
+  error: string | null;
 }>();
+
 const emit = defineEmits<{
   edit: [id: Number];
   delete: [id: Number];
   add: [];
+  retry: [];
 }>();
 </script>
 
 <template>
-    <header class="list-header">
-      <h1>Список опросов</h1>
-      <el-button
-        type="primary"
-        :icon="Plus"
-        @click="emit('add')"
-      >
-        Добавить опрос
-      </el-button>
-    </header>
+  <header class="list-header">
+    <h1>Список опросов</h1>
+    <el-button
+      type="primary"
+      :icon="Plus"
+      @click="emit('add')"
+    >
+      Добавить опрос
+    </el-button>
+  </header>
+
   <main>
-    <p v-if="!props.surveys.length">Опросов пока нет(</p>
+    <el-skeleton v-if="isLoading" :rows="5" animated />
+    
+    <el-alert
+      v-else-if="error"
+      type="error"
+      :title="error"
+      show-icon
+      closable
+      @close="emit('retry')"
+    />
+
+    <p v-else-if="!props.surveys.length" class="empty-state">
+      Опросов пока нет(
+    </p>
+
     <table v-else>
       <thead class="table-head">
         <tr>
@@ -60,7 +79,15 @@ const emit = defineEmits<{
     margin: 0;
   }
 }
+
 .table-head {
-    margin-bottom: 20px;
+  margin-bottom: 20px;
+}
+
+.empty-state {
+  color: #909399;
+  font-style: italic;
+  text-align: center;
+  padding: 20px;
 }
 </style>
