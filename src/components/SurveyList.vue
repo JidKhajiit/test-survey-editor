@@ -1,5 +1,3 @@
-// в режиме редактирования сделать табы
-параметры/вопросы/логика/условия/респонденты, добавление опроса, удаление опроса
 <script setup lang="ts">
 import { Plus } from "@element-plus/icons-vue";
 import SurveyCard from "./Survey.vue";
