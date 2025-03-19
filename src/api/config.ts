@@ -16,6 +16,6 @@ export const API_ENDPOINTS = {
   // Relations endpoints
   relations: {
     getById: (id: number) => `/question-relations/${id}`,
-    create: '/question-relations',
+    create: '/question-relations/',
   }
 } as const; 
