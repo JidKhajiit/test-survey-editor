@@ -1,25 +1,16 @@
+import type { ISurvey, IRelation, IQuestion } from '@api/models/Survey';
 
-export type Question = {
-    id: Number;
-    label: String;
-    answers: {id: Number, label: String}[];
+export type NewQuestion = Omit<IQuestion, 'id'>
+
+export type NewRelation = Omit<IRelation, 'id'>
+
+export type EmptyRelation = {
+    from_question: null;
+    answer_choice: null;
+    to_question: null;
 }
 
-export type Relation = {
-    question: Question;
-    answer: Number | null;
-    relatedQuestion: Number;
-}
-
-
-export type Survey = {
-    id: Number;
-    label: String;
-    about: String;
-    author: String;
-    questions: Question[];
-    relations: Relation[];
-}
+export type NewSurvey = Omit<ISurvey, 'id'>
 
 export enum Tab {
     PARAMS = 'params',

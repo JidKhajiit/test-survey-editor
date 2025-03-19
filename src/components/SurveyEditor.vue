@@ -2,8 +2,8 @@
 import { ref } from "vue";
 import RelationsEditor from "./RelationsEditor.vue";
 import QuestionsEditor from "./QuestionsEditor.vue";
-import { Tab, type Survey } from "../assets/types";
-import { tabs } from "../assets/constants/tabs";
+import { type Survey, Tab } from "@assets/types";
+import { tabs } from "@assets/constants/tabs";
 
 const props = defineProps<{
   survey: Survey;
@@ -21,7 +21,7 @@ const activeName = ref(Tab.RELATIONS);
     <el-button plain @click="emit('back')" class="button-back">
       ← назад
     </el-button>
-    <h1>{{ props.survey.label }}</h1>
+    <h1>{{ props.survey.title }}</h1>
   </header>
   <el-card shadow="always">
     <el-tabs v-model="activeName" type="card" class="tabs">

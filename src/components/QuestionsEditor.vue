@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { Delete, Edit, Plus } from "@element-plus/icons-vue";
-import type { Survey } from "../assets/types";
+import type { Survey } from "@assets/types";
+import QuestionDialog from "./QuestionDialog.vue";
 
 const props = defineProps<{
   survey: Survey;
@@ -11,21 +12,23 @@ const emit = defineEmits<{
 }>();
 
 const questions = ref([...props.survey.questions]);
+const dialogVisible = ref(false);
 
 const addQuestion = () => {
+  dialogVisible.value = true;
+};
+
+const handleAddQuestion = (questionData: Omit<typeof questions.value[0], 'id'>) => {
   const newId = Math.max(...questions.value.map(q => Number(q.id)), -1) + 1;
   questions.value.push({
     id: newId,
-    label: `Вопрос ${newId + 1}`,
-    answers: [
-      { id: 0, label: 'Ответ 1' },
-      { id: 1, label: 'Ответ 2' }
-    ]
+    ...questionData
   });
+  dialogVisible.value = false;
 };
 
 const deleteQuestion = (questionId: Number) => {
-  questions.value = questions.value.filter(q => q.id !== questionId);
+  // questions.value = questions.value.filter(q => q.id !== questionId);
 };
 
 const save = () => {
@@ -47,12 +50,14 @@ const save = () => {
         class="question-card"
       >
         <div class="question-header">
-          <h3>{{ question.label }}</h3>
+          <h3>{{ question.question_text }}</h3>
           <div class="question-controls">
             <el-button
               type="primary"
               :icon="Edit"
               circle
+              disabled
+              title="Доступно в платной версии 😊"
               size="small"
             />
             <el-button
@@ -60,6 +65,8 @@ const save = () => {
               :icon="Delete"
               circle
               size="small"
+              disabled
+              title="Доступно в платной версии 😊"
               @click="() => deleteQuestion(question.id)"
             />
           </div>
@@ -75,6 +82,7 @@ const save = () => {
         </div>
       </el-card>
     </el-scrollbar>
+
     <el-button
       class="button-add"
       type="primary"
@@ -83,6 +91,12 @@ const save = () => {
     >
       Добавить вопрос
     </el-button>
+
+    <QuestionDialog
+      v-model="dialogVisible"
+      :survey-id="survey.id"
+      @add="handleAddQuestion"
+    />
   </main>
 
   <footer class="editor-controls">
@@ -147,5 +161,18 @@ const save = () => {
 
 .button-add {
   margin-top: 20px;
+}
+
+.choice-item {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
+  align-items: center;
+}
+
+.dialog-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
 }
 </style>

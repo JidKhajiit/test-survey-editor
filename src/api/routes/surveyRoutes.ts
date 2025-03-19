@@ -8,7 +8,6 @@ const router = Router();
 const validateSurvey = [
   body('label').notEmpty().withMessage('Label is required'),
   body('about').notEmpty().withMessage('About is required'),
-  body('author').notEmpty().withMessage('Author is required'),
   body('questions').isArray().withMessage('Questions must be an array'),
   body('questions.*.label').notEmpty().withMessage('Question label is required'),
   body('questions.*.answers').isArray().withMessage('Answers must be an array'),
@@ -22,7 +21,5 @@ const validateSurvey = [
 router.get('/', surveyController.getAllSurveys);
 router.get('/:id', surveyController.getSurveyById);
 router.post('/', validateSurvey, surveyController.createSurvey);
-router.put('/:id', validateSurvey, surveyController.updateSurvey);
-router.delete('/:id', surveyController.deleteSurvey);
 
 export default router; 

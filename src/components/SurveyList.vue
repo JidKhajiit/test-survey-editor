@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Plus } from "@element-plus/icons-vue";
 import SurveyCard from "./Survey.vue";
-import type { Survey } from "../assets/types";
+import type { Survey } from "@assets/types";
 
 const props = defineProps<{
   surveys: Survey[];
@@ -23,6 +23,8 @@ const emit = defineEmits<{
     <el-button
       type="primary"
       :icon="Plus"
+      disabled
+      title="Доступно в платной версии 😊"
       @click="emit('add')"
     >
       Добавить опрос
@@ -51,7 +53,6 @@ const emit = defineEmits<{
           <th style="min-width: 40px">Id</th>
           <th style="min-width: 180px">Название</th>
           <th style="width: 100%">Описание</th>
-          <th style="min-width: 180px">Автор</th>
           <th style="min-width: 100px"></th>
         </tr>
       </thead>

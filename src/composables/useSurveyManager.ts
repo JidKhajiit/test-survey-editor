@@ -1,15 +1,15 @@
 import { ref, computed, onMounted } from 'vue';
-import type { Survey } from '../assets/types';
-import { surveyApi } from '../api/services';
+import type { ISurvey } from '@api/models/Survey';
+import type { NewSurvey } from '@assets/types';
+import { surveyApi } from '@api/services';
 
 export function useSurveyManager() {
-    const surveys = ref<Survey[]>([]);
+    const surveys = ref<ISurvey[]>([]);
     const editingSurveyId = ref<Number | null>(null);
     const isLoading = ref(false);
     const error = ref<string | null>(null);
-
     const editingSurvey = computed(() => 
-        surveys.value.find(({ id }) => id === editingSurveyId.value)
+        surveys.value.find(({ id }: { id: Number }) => id === editingSurveyId.value)
     );
     const isEditing = computed(() => editingSurveyId.value !== null);
 
@@ -33,35 +33,7 @@ export function useSurveyManager() {
         editingSurveyId.value = null;
     };
 
-    const deleteSurvey = async (id: Number) => {
-        try {
-            await surveyApi.delete(Number(id));
-            surveys.value = surveys.value.filter(survey => survey.id !== id);
-        } catch (err) {
-            error.value = err instanceof Error ? err.message : 'Failed to delete survey';
-            throw err;
-        }
-    };
-
-    const saveSurvey = async (editedSurvey: Survey) => {
-        if (!editingSurveyId.value) {
-            console.error('No survey is being edited');
-            return;
-        }
-
-        try {
-            const updatedSurvey = await surveyApi.update(Number(editingSurveyId.value), editedSurvey);
-            surveys.value = surveys.value.map(survey =>
-                survey.id === editingSurveyId.value ? updatedSurvey : survey
-            );
-            stopEditing();
-        } catch (err) {
-            error.value = err instanceof Error ? err.message : 'Failed to save survey';
-            throw err;
-        }
-    };
-
-    const createSurvey = async (newSurvey: Omit<Survey, 'id'>) => {
+    const createSurvey = async (newSurvey: NewSurvey) => {
         try {
             const createdSurvey = await surveyApi.create(newSurvey);
             surveys.value.push(createdSurvey);
@@ -84,8 +56,6 @@ export function useSurveyManager() {
         error,
         startEditing,
         stopEditing,
-        deleteSurvey,
-        saveSurvey,
         createSurvey,
         loadSurveys
     };

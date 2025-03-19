@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { Delete, Edit } from "@element-plus/icons-vue";
-import type { Survey } from "../assets/types";
+import type { ISurvey } from "@api/models/Survey";
 
 const props = defineProps<{
-  survey: Survey;
+  survey: ISurvey;
 }>();
 const emit = defineEmits<{
   edit: [id: Number];
@@ -22,9 +22,8 @@ const confirmDelete = () => {
 <template>
   <tr class="el-card is-always-shadow el-card__body">
     <td style="min-width: 40px">{{ props.survey.id }}</td>
-    <td style="min-width: 180px">{{ props.survey.label }}</td>
-    <td style="width: 100%">{{ props.survey.about }}</td>
-    <td style="min-width: 180px">{{ props.survey.author }}</td>
+    <td style="min-width: 180px">{{ props.survey.title }}</td>
+    <td style="width: 100%">{{ props.survey.description }}</td>
     <td>
       <div class="controls">
         <el-button
@@ -49,11 +48,11 @@ const confirmDelete = () => {
     title="Подтверждение удаления"
     width="400px"
   >
-    <span>Вы уверены, что хотите удалить опрос "{{ props.survey.label }}"?</span>
+    <span>Вы уверены, что хотите удалить опрос "{{ props.survey.title }}"?</span>
     <template #footer>
       <div class="dialog-footer">
         <el-button @click="isDelConfirmModalVisible = false">Отмена</el-button>
-        <el-button type="danger" @click="confirmDelete">Удалить</el-button>
+        <el-button type="danger" disabled title="Доступно в платной версии 😊" @click="confirmDelete">Удалить</el-button>
       </div>
     </template>
   </el-dialog>

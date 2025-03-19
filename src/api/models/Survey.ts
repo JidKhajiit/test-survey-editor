@@ -1,55 +1,55 @@
 import mongoose, { Schema, Document } from 'mongoose';
 
-export interface IAnswer {
+export interface IChoice {
   id: number;
-  label: string;
+  choice_text: string;
 }
 
 export interface IQuestion {
   id: number;
-  label: string;
-  answers: IAnswer[];
+  form: number;
+  question_text: string;
+  question_type: string;
+  choices: IChoice[];
 }
 
 export interface IRelation {
-  question: IQuestion;
-  answer: number | null;
-  relatedQuestion: number;
+  id: number;
+  from_question: number;
+  answer_choice: number | null;
+  to_question: number;
 }
 
 export interface ISurvey extends Document {
-  label: string;
-  about: string;
-  author: string;
+  id: number;
+  title: string;
+  description: string;
   questions: IQuestion[];
-  relations: IRelation[];
-  createdAt: Date;
-  updatedAt: Date;
 }
 
-const AnswerSchema = new Schema<IAnswer>({
+const ChoiceSchema = new Schema<IChoice>({
   id: { type: Number, required: true },
-  label: { type: String, required: true }
+  choice_text: { type: String, required: true }
 });
 
 const QuestionSchema = new Schema<IQuestion>({
   id: { type: Number, required: true },
-  label: { type: String, required: true },
-  answers: [AnswerSchema]
+  form: { type: Number, required: true },
+  question_text: { type: String, required: true },
+  question_type: { type: String, required: true },
+  choices: [ChoiceSchema]
 });
 
 const RelationSchema = new Schema<IRelation>({
-  question: { type: QuestionSchema, required: true },
-  answer: { type: Number, default: null },
-  relatedQuestion: { type: Number, required: true }
+  from_question: { type: Number, required: true },
+  answer_choice: { type: Number, default: null },
+  to_question: { type: Number, required: true }
 });
 
 const SurveySchema = new Schema<ISurvey>({
-  label: { type: String, required: true },
-  about: { type: String, required: true },
-  author: { type: String, required: true },
+  title: { type: String, required: true },
+  description: { type: String, required: true },
   questions: [QuestionSchema],
-  relations: [RelationSchema]
 }, {
   timestamps: true
 });

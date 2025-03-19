@@ -1,5 +1,6 @@
 import { API_BASE_URL, API_ENDPOINTS } from './config';
-import type { Survey } from '../assets/types';
+import type { ISurvey, IRelation, IChoice, IQuestion } from './models/Survey';
+import type { NewSurvey, NewQuestion, NewRelation } from '@assets/types';
 
 // Generic API request function
 async function apiRequest<T>(
@@ -23,36 +24,37 @@ async function apiRequest<T>(
 
 // Survey API functions
 export const surveyApi = {
-  getAll: () => apiRequest<Survey[]>(API_ENDPOINTS.surveys.getAll),
+  getAll: () => apiRequest<ISurvey[]>(API_ENDPOINTS.surveys.getAll),
   
   getById: (id: number) => 
-    apiRequest<Survey>(API_ENDPOINTS.surveys.getById(id)),
+    apiRequest<ISurvey>(API_ENDPOINTS.surveys.getById(id)),
   
-  create: (survey: Omit<Survey, 'id'>) => 
-    apiRequest<Survey>(API_ENDPOINTS.surveys.create, {
+  create: (survey: NewSurvey) => 
+    apiRequest<ISurvey>(API_ENDPOINTS.surveys.create, {
       method: 'POST',
       body: JSON.stringify(survey),
-    }),
-  
-  update: (id: number, survey: Partial<Survey>) => 
-    apiRequest<Survey>(API_ENDPOINTS.surveys.update(id), {
-      method: 'PUT',
-      body: JSON.stringify(survey),
-    }),
-  
-  delete: (id: number) => 
-    apiRequest<void>(API_ENDPOINTS.surveys.delete(id), {
-      method: 'DELETE',
     }),
 };
 
 // Question API functions
 export const questionApi = {
-  getAll: () => apiRequest<Survey['questions']>(API_ENDPOINTS.questions.getAll),
+  getAll: () => apiRequest<IQuestion[]>(API_ENDPOINTS.questions.getAll),
   
-  create: (question: Omit<Survey['questions'][0], 'id'>) => 
-    apiRequest<Survey['questions'][0]>(API_ENDPOINTS.questions.create, {
+  create: (question: NewQuestion) => 
+    apiRequest<IQuestion>(API_ENDPOINTS.questions.create, {
       method: 'POST',
       body: JSON.stringify(question),
+    }),
+  getRelatedChoices: (questionId: number) => 
+    apiRequest<IChoice[]>(API_ENDPOINTS.questions.getRelatedChoices(questionId)),
+}; 
+
+// Relation API functions
+export const relationApi = {
+  getById: (id: number) => apiRequest<IRelation>(API_ENDPOINTS.relations.getById(id)),
+  create: (relation: NewRelation) =>
+    apiRequest<IRelation>(API_ENDPOINTS.relations.create, {
+      method: 'POST',
+      body: JSON.stringify(relation),
     }),
 }; 

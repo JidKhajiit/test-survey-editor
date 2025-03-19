@@ -3,9 +3,9 @@ import { Survey } from '../models/Survey';
 
 export const surveyController = {
   // Get all surveys
-  async getAllSurveys(req: Request, res: Response) {
+  async getAllSurveys(_: any, res: Response) {
     try {
-      const surveys = await Survey.find().sort({ createdAt: -1 });
+      const surveys = await Survey.find();
       res.json(surveys);
     } catch (error) {
       res.status(500).json({ message: 'Error fetching surveys', error });
@@ -36,34 +36,4 @@ export const surveyController = {
       res.status(400).json({ message: 'Error creating survey', error });
     }
   },
-
-  // Update survey
-  async updateSurvey(req: Request, res: Response) {
-    try {
-      const survey = await Survey.findByIdAndUpdate(
-        req.params.id,
-        req.body,
-        { new: true, runValidators: true }
-      );
-      if (!survey) {
-        return res.status(404).json({ message: 'Survey not found' });
-      }
-      res.json(survey);
-    } catch (error) {
-      res.status(400).json({ message: 'Error updating survey', error });
-    }
-  },
-
-  // Delete survey
-  async deleteSurvey(req: Request, res: Response) {
-    try {
-      const survey = await Survey.findByIdAndDelete(req.params.id);
-      if (!survey) {
-        return res.status(404).json({ message: 'Survey not found' });
-      }
-      res.json({ message: 'Survey deleted successfully' });
-    } catch (error) {
-      res.status(500).json({ message: 'Error deleting survey', error });
-    }
-  }
 }; 

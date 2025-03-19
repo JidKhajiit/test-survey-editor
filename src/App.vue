@@ -2,11 +2,14 @@
 import SurveyList from "./components/SurveyList.vue";
 import SurveyEditor from "./components/SurveyEditor.vue";
 import { useSurveyManager } from "./composables/useSurveyManager";
+import type { Survey } from "@assets/types";
 
 const {
   surveys,
   editingSurvey,
   isEditing,
+  isLoading,
+  error,
   startEditing,
   stopEditing,
   deleteSurvey,
@@ -19,11 +22,13 @@ const {
     <SurveyList
       v-if="!isEditing"
       :surveys="surveys"
+      :is-loading="isLoading"
+      :error="error"
       @edit="startEditing"
       @delete="deleteSurvey"
     />
     <SurveyEditor
-      v-else
+      v-else-if="editingSurvey"
       :survey="editingSurvey"
       @back="stopEditing"
       @save="saveSurvey"

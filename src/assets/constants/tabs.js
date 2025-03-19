@@ -1,4 +1,4 @@
-import { Tab } from '../types';
+import { Tab } from '@assets/types';
 
 export const tabs = [
     {
